@@ -1,0 +1,37 @@
+.box {
+    padding: 25px;
+    color: white;
+    background-color: black;
+    border: 2px solid yellow;
+  }
+  
+  .box-2 {
+    color: white;
+    background-color: red;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .hello {
+    left: 50%;
+    top: 25px;
+    padding: 10px 50px;
+  }
+  
+  .there {
+    top: 25px;
+  }
+  
+  .relative {
+    position: relative;
+  }
+  
+  .absolute {
+    position: absolute;
+  }
+  
+  .fixed {
+    position: fixed;
+    top: 100px;
+    right: 40px;
+  }
