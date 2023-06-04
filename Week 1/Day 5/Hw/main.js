@@ -1,12 +1,11 @@
-class Book {
-    constructor(title, author, isbn) {
+class Tasks {
+    constructor(Tasks, isbn) {
       this.title = title;
-      this.author = author;
       this.isbn = isbn;
     }
   
     static fromJSON(json) {
-      return new Book(json.title, json.author, json.isbn);
+      return new Tasks(json.Tasks, json.isbn);
     }
   }
   
@@ -14,16 +13,15 @@ class Book {
     constructor() {
       this.form = document.getElementById('form');
   
-      this.title = document.getElementById('title-input');
-      this.author = document.getElementById('author-input');
+      this.Tasks = document.getElementById('Tasks-input');
       this.isbn = document.getElementById('isbn-input');
   
       this.tableBody = document.getElementById('table-body');
   
       this.form.addEventListener('submit', (e) => this.onFormSubmit(e));
   
-      this.books = [];
-      this.loadBooksFromLocalStorage();
+      this.Tasks = [];
+      this.loadTasksFromLocalStorage();
       this.renderBookTable();
     }
   
@@ -32,78 +30,70 @@ class Book {
   
       if (
         this.title.value == '' ||
-        this.author.value == '' ||
         this.isbn.value == ''
       ) {
         return;
       }
   
-      const book = new Book(this.title.value, this.author.value, this.isbn.value);
+      const Tasks = new Tasks(this.title.value, this.isbn.value);
   
-      this.books.push(book);
+      this.books.push(Tasks);
   
-      this.saveBooksToLocalStorage();
-      this.renderBookTable();
+      this.saveTasksToLocalStorage();
+      this.renderTasksTable();
   
-      this.title.value = '';
-      this.author.value = '';
+      this.Tasks.value = '';
       this.isbn.value = '';
     }
   
-    renderBookTable() {
+    renderTasksTable() {
       this.tableBody.innerHTML = '';
   
-      for (let i = 0; i < this.books.length; i++) {
-        const book = this.books[i];
+      for (let i = 0; i < this.Tasks.length; i++) {
+        const Tasks = this.Tasks[i];
   
-        const tr = this.createBookTableRow(book);
+        const tr = this.createTasksTableRow(Tasks);
         this.tableBody.appendChild(tr);
       }
     }
   
-    createBookTableRow(book) {
+    createTasksTableRow(book) {
       const tr = document.createElement('tr');
   
-      const tdTitle = document.createElement('td');
-      const tdAuthor = document.createElement('td');
-      const tdISBN = document.createElement('td');
+      const tdTasks = document.createElement('td');
       const tdActions = document.createElement('td');
   
-      tdTitle.innerHTML = book.title;
-      tdAuthor.innerHTML = book.author;
-      tdISBN.innerHTML = book.isbn;
+      tdTitle.innerHTML = book.Tasks;
   
-      const actionButtons = this.createActionButtons(book);
+      const actionButtons = this.createActionButtons(Tasks);
       tdActions.appendChild(actionButtons[0]);
       tdActions.appendChild(actionButtons[1]);
   
-      tr.appendChild(tdTitle);
-      tr.appendChild(tdAuthor);
-      tr.appendChild(tdISBN);
+      tr.appendChild(tdTasks);
       tr.appendChild(tdActions);
   
       return tr;
     }
   
-    createActionButtons(book) {
+    createActionButtons(Tasks) {
       const deleteButton = document.createElement('button');
       const editButton = document.createElement('button');
   
       deleteButton.setAttribute('class', 'btn btn-danger btn-sm');
       deleteButton.innerHTML = 'Delete';
       deleteButton.addEventListener('click', () =>
-        this.onRemoveBookClicked(book)
+        this.onRemoveBookClicked(Tasks)
       );
   
       editButton.setAttribute('class', 'btn btn-warning btn-sm ms-2');
       editButton.innerHTML = 'Edit';
-      editButton.addEventListener('click', () => this.onEditBookClicked(book));
+      editButton.addEventListener('click', () => this.onEditTasksClicked(Tasks));
   
       return [deleteButton, editButton];
     }
   
-    onRemoveBookClicked(book) {
-      this.books = this.books.filter((x) => {
+    onRemoveBookClicked(Tasks) {
+      this.Tasks = this.Tasks.filter((x) => {
         return book.isbn !== x.isbn;
       });
   
@@ -113,27 +103,26 @@ class Book {
   
     onEditBookClicked(book) {
       this.books = this.books.filter((x) => {
-        return book.isbn !== x.isbn;
+        return Tasks.isbn !== x.isbn;
       });
   
-      this.title.value = book.title;
-      this.author.value = book.author;
-      this.isbn.value = book.isbn;
+      this.title.value = book.Tasks;
+      this.isbn.value = this.TasksArr.isbn;
   
-      this.saveBooksToLocalStorage();
-      this.renderBookTable();
+      this.saveTaskToLocalStorage();
+      this.renderTasksTable();
     }
   
-    saveBooksToLocalStorage() {
-      const json = JSON.stringify(this.books);
-      localStorage.setItem('books', json);
+    saveTasksToLocalStorage() {
+      const json = JSON.stringify(this.TasksArr);
+      localStorage.setItem('Tasks', json);
     }
   
-    loadBooksFromLocalStorage() {
-      const json = localStorage.getItem('books');
+    loadTasksFromLocalStorage() {
+      const json = localStorage.getItem('Tasks');
       if (json) {
-        const bookArr = JSON.parse(json);
-        this.books = bookArr.map((x) => Book.fromJSON(x));
+        const TasksArr = JSON.parse(json);
+        this.TasksArr = TasksArr.map((x) => TasksArr.fromJSON(x));
       }
     }
   }
